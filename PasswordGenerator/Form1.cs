@@ -15,23 +15,15 @@ namespace PasswordGenerator
 
         bool lowercaseB, uppercaseB, numbersB, symbolsB;
 
+        // Constructor
         public Form1()
         {
             InitializeComponent();
-        }
 
-        // Generate button clicked
-        private void button1_Click(object sender, EventArgs e)
-        {
-            setBools();
-            if (isBlank())
-                password.Text = "ERROR: Please check at least one box.";
-            else
-            {
-                RandomPasswordGen passGen = new RandomPasswordGen(trackBar.Value, lowercaseB, uppercaseB, numbersB, symbolsB);
-                password.Text = passGen.getPassword();
-            }
-                
+            
+            // Makes everything have a transparent background
+            //this.Form1.Parent = this.SplashImage;
+            //this.lblVersion.BackColor = Color.Transparent;
         }
 
         // Checks if checkboxes are checked, sets the respective bools.
@@ -65,6 +57,30 @@ namespace PasswordGenerator
             Clipboard.SetText(password.Text);
         }
 
+        private void numOfChars_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        // Generate button clicked
+        private void pictureBox1_Click(object sender, EventArgs e)
+        {
+            setBools();
+            if (isBlank())
+                password.Text = "ERROR: Please check at least one box.";
+            else
+            {
+                RandomPasswordGen passGen = new RandomPasswordGen(trackBar.Value, lowercaseB, uppercaseB, numbersB, symbolsB);
+                password.Text = passGen.getPassword();
+            }
+        }
+
+        // Copy to Clipboard button clicked
+        private void pictureBox2_Click(object sender, EventArgs e)
+        {
+            Clipboard.SetText(password.Text);
+        }
+
         // Checks if all checkboxes are blank, if yes, return true.
         private bool isBlank()
         {
@@ -78,7 +94,7 @@ namespace PasswordGenerator
 
         private void Form1_Load(object sender, EventArgs e)
         {
-
+            
         }
 
         private void label1_Click(object sender, EventArgs e)
