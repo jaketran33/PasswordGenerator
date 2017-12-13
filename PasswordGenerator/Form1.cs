@@ -4,9 +4,22 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+
+/* 
+Set default form size on startup
+Took out "ERROR:" from error message
+Added history list, appends history label when Generate is clicked
+Added time stamp
+ */ 
+
+/* TODO:
+ * Change history and time stamps to most recent order instead of first to last
+ * Serialize data upon exit and reload it upon startup
+ */ 
 
 namespace PasswordGenerator
 {
@@ -15,16 +28,18 @@ namespace PasswordGenerator
 
         bool lowercaseB, uppercaseB, numbersB, symbolsB;
 
-        // Constructor
-        public Form1()
+
+		// Constructor
+		public Form1()
         {
             InitializeComponent();
 
-            
-            // Makes everything have a transparent background
-            //this.Form1.Parent = this.SplashImage;
-            //this.lblVersion.BackColor = Color.Transparent;
-        }
+			this.Size = new Size(700, 750);
+			history.Text = "";
+			timeStamp.Text = "";
+
+
+		}
 
         // Checks if checkboxes are checked, sets the respective bools.
         private void setBools()
@@ -67,11 +82,17 @@ namespace PasswordGenerator
         {
             setBools();
             if (isBlank())
-                password.Text = "ERROR: Please check at least one box.";
+                password.Text = "Please check at least one box.";
             else
             {
                 RandomPasswordGen passGen = new RandomPasswordGen(trackBar.Value, lowercaseB, uppercaseB, numbersB, symbolsB);
-                password.Text = passGen.getPassword();
+				string pw = passGen.getPassword();
+				password.Text = pw;
+
+				history.Text += pw + "\n";
+
+				DateTime dateTime = DateTime.UtcNow.Date;
+				timeStamp.Text = DateTime.Now.ToString("hh:mm:ss") + " " + DateTime.Today.ToString("MM/dd/yyyy") + "\n";
             }
         }
 
